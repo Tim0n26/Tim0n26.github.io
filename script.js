@@ -1,13 +1,18 @@
-const redB = document.getElementById('redButton');
-const greenB = document.getElementById('greenButton');
-const body = document.querySelector('body');
+let currentPostIndex = 0; // Индекс текущего поста
 
-redB.addEventListener('click', () => {
-  body.classList.add('red');
-  body.classList.remove('green');
-})
+function getPosts() {
+  fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(response => response.json())
+    .then(data => {
+      const postList = document.getElementById('postList');
+      postList.innerHTML = ''; // Очистить список перед добавлением новых элементов
+      const listItem = document.createElement('li');
+      listItem.textContent = `userId: ${data[currentPostIndex].userId}, id: ${data[currentPostIndex].id}, title: ${data[currentPostIndex].title}, body: ${data[currentPostIndex].body}`;
+      postList.appendChild(listItem);
+    });
+}
 
-greenB.addEventListener('click', () => {
-  body.classList.add('green');
-  body.classList.remove('red');
-})
+function getNextPost() {
+  currentPostIndex++;
+  getPosts();
+}
